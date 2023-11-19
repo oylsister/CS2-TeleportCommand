@@ -7,9 +7,12 @@
  Similar to Teleport command from SourcePawn.
 
  ## Command ##
- `!tele` or `!teleport` [playername] [another_playername] for teleport player to another player.
- `!bring` [playername] for bring player to you.
- `!goto` [playername] for bring you to player. (Haven't started doing yet)
+ `!tele` or `!teleport` <playername> <another_playername> for teleport player to another player.
+
+ `!bring` <playername> for bring player to you.
+
+ `!goto` <playername> for bring you to player. (Haven't started doing yet)
+
 
  playername as @ct @t or @all are worked (This is for temporary only).
 
