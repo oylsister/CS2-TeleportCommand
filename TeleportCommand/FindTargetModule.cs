@@ -19,11 +19,10 @@ namespace TeleportCommand
 
         public List<CCSPlayerController> FindTarget(string targetname, bool destination = false)
         {
-            List<CCSPlayerController> targetlist = new List<CCSPlayerController>();
+            List<CCSPlayerController> targetlist = Utilities.GetPlayers();
 
-            for(int i = 1; i < Server.MaxPlayers; i++) 
+            foreach(var player in targetlist)
             {
-                CCSPlayerController player = Utilities.GetPlayerFromIndex(i);
                 CCSPlayerPawn playerPawn = player.PlayerPawn.Value;
                 bool IsAlive = player.PawnIsAlive;
 

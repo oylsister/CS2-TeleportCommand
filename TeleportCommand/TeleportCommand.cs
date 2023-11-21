@@ -1,8 +1,10 @@
-﻿using CounterStrikeSharp.API;
+﻿using System.ComponentModel.DataAnnotations;
+using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Utils;
+using CounterStrikeSharp.API.Modules.Admin;
 
 namespace TeleportCommand;
 public class TeleportCommand : BasePlugin
@@ -20,6 +22,7 @@ public class TeleportCommand : BasePlugin
         AddCommand("bring", "Bring Player To User", Command_Bring);
     }
 
+    [RequiresPermissions("@css/slay")]
     private void Command_Teleport(CCSPlayerController? client, CommandInfo info)
     {
         if (info.ArgCount <= 0) 
@@ -54,10 +57,10 @@ public class TeleportCommand : BasePlugin
         Vector Position = playerPawn.AbsOrigin;
         QAngle Angle = playerPawn.AbsRotation;
 
-        for(int i = 0; i < targetname.Count; i++)
+        foreach(var player in targetname)
         {
             // Teleport all of them
-            CCSPlayerPawn targetPawn = targetname[i].PlayerPawn.Value;
+            CCSPlayerPawn targetPawn = player.PlayerPawn.Value;
             targetPawn.Teleport(Position, Angle, null);
         }
 
@@ -65,6 +68,7 @@ public class TeleportCommand : BasePlugin
         return;
     }
 
+    [RequiresPermissions("@css/slay")]
     private void Command_Bring(CCSPlayerController? client, CommandInfo info)
     {
         if (info.ArgCount <= 0)
@@ -87,10 +91,10 @@ public class TeleportCommand : BasePlugin
         Vector Position = playerPawn.AbsOrigin;
         QAngle Angle = playerPawn.AbsRotation;
 
-        for (int i = 0; i < targetname.Count; i++)
+        foreach (var player in targetname)
         {
             // Teleport all of them
-            CCSPlayerPawn targetPawn = targetname[i].PlayerPawn.Value;
+            CCSPlayerPawn targetPawn = player.PlayerPawn.Value;
             targetPawn.Teleport(Position, Angle, null);
         }
 
