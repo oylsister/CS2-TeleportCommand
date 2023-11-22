@@ -38,10 +38,10 @@ public class TeleportCommand : BasePlugin
         }
 
         // Get the client name that you want to be teleported.
-        List<CCSPlayerController> targetname = _findTarget.FindTarget(info.GetArg(0));
+        List<CCSPlayerController> targetname = _findTarget.FindTarget(client!, info.GetArg(0));
 
         // Get the client name that you want to be destination.
-        List<CCSPlayerController> destTemp = _findTarget.FindTarget(info.GetArg(1), true);
+        List<CCSPlayerController> destTemp = _findTarget.FindTarget(client!, info.GetArg(1), true);
 
         if (targetname.Count <= 0)
         {
@@ -67,7 +67,7 @@ public class TeleportCommand : BasePlugin
         {
             // Teleport all of them
             CCSPlayerPawn targetPawn = player.PlayerPawn.Value;
-            targetPawn.Teleport(Position, Angle, null!);
+            targetPawn.Teleport(Position, Angle, new Vector(0f, 0f, 0f));
         }
 
         info.ReplyToCommand("[Teleport] Successfully Teleport Client.");
@@ -84,7 +84,7 @@ public class TeleportCommand : BasePlugin
         }
 
         // Get the client name that you want to be teleported.
-        List<CCSPlayerController> targetname = _findTarget.FindTarget(info.GetArg(0));
+        List<CCSPlayerController> targetname = _findTarget.FindTarget(client!, info.GetArg(0));
 
         if (targetname.Count <= 0)
         {
@@ -101,7 +101,7 @@ public class TeleportCommand : BasePlugin
         {
             // Teleport all of them
             CCSPlayerPawn targetPawn = player.PlayerPawn.Value;
-            targetPawn.Teleport(Position, Angle, null!);
+            targetPawn.Teleport(Position, Angle, new Vector(0f, 0f, 0f));
         }
 
         info.ReplyToCommand("[Teleport] Successfully Teleport bring client to you.");

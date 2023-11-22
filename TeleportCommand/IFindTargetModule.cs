@@ -4,6 +4,6 @@ namespace TeleportCommand
 {
     public interface IFindTargetModule
     {
-        public List<CCSPlayerController> FindTarget(string targetname, bool destionation = false);
+        public List<CCSPlayerController> FindTarget(CCSPlayerController client, string targetname, bool destination = false);
     }
 }

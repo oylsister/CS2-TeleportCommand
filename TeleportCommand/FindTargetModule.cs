@@ -17,7 +17,7 @@ namespace TeleportCommand
             _core = plugin;
         }
 
-        public List<CCSPlayerController> FindTarget(string targetname, bool destination = false)
+        public List<CCSPlayerController> FindTarget(CCSPlayerController client, string targetname, bool destination = false)
         {
             List<CCSPlayerController> targetlist = Utilities.GetPlayers();
 
@@ -48,6 +48,15 @@ namespace TeleportCommand
                     if (IsAlive)
                     {
                         targetlist.Add(player);
+                    }
+                }
+                // for yourself
+                else if (string.Equals(targetname, "@me"))
+                {
+                    if (client.PawnIsAlive)
+                    {
+                        targetlist.Add(client);
+                        break;
                     }
                 }
                 else
