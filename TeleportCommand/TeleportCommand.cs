@@ -14,7 +14,13 @@ public class TeleportCommand : BasePlugin
     public override string ModuleAuthor => "Oylsister";
     public override string ModuleDescription => "Advanced Teleport Command for Counter-Strike 2";
 
-    private IFindTargetModule? _findTarget;
+    private FindTargetModule _findTarget;
+
+    public TeleportCommand()
+    {
+        _findTarget = new FindTargetModule(this);
+    }
+
     public override void Load(bool hotReload)
     {
         AddCommand("teleport", "Teleport Player to Player", Command_Teleport);
@@ -54,14 +60,14 @@ public class TeleportCommand : BasePlugin
 
         // Find the angle and position.
         CCSPlayerPawn playerPawn = targetdestination.PlayerPawn.Value;
-        Vector Position = playerPawn.AbsOrigin;
-        QAngle Angle = playerPawn.AbsRotation;
+        Vector Position = playerPawn.AbsOrigin!;
+        QAngle Angle = playerPawn.AbsRotation!;
 
         foreach(var player in targetname)
         {
             // Teleport all of them
             CCSPlayerPawn targetPawn = player.PlayerPawn.Value;
-            targetPawn.Teleport(Position, Angle, null);
+            targetPawn.Teleport(Position, Angle, null!);
         }
 
         info.ReplyToCommand("[Teleport] Successfully Teleport Client.");
@@ -87,15 +93,15 @@ public class TeleportCommand : BasePlugin
         }
 
         // Find the angle and position.
-        CCSPlayerPawn playerPawn = client.PlayerPawn.Value;
-        Vector Position = playerPawn.AbsOrigin;
-        QAngle Angle = playerPawn.AbsRotation;
+        CCSPlayerPawn playerPawn = client!.PlayerPawn.Value;
+        Vector Position = playerPawn.AbsOrigin!;
+        QAngle Angle = playerPawn.AbsRotation!;
 
         foreach (var player in targetname)
         {
             // Teleport all of them
             CCSPlayerPawn targetPawn = player.PlayerPawn.Value;
-            targetPawn.Teleport(Position, Angle, null);
+            targetPawn.Teleport(Position, Angle, null!);
         }
 
         info.ReplyToCommand("[Teleport] Successfully Teleport bring client to you.");
