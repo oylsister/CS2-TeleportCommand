@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CounterStrikeSharp.API;
+﻿using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
-using CounterStrikeSharp.API.Modules.Utils;
 
 namespace TeleportCommand
 {
@@ -17,60 +11,56 @@ namespace TeleportCommand
             _core = plugin;
         }
 
-        public List<CCSPlayerController> FindTarget(CCSPlayerController client, string targetname, bool destination = false)
+        public List<CCSPlayerController> FindTarget(CCSPlayerController? client, string targetname, bool destination = false)
         {
-            List<CCSPlayerController> targetlist = Utilities.GetPlayers();
-
-            foreach(var player in targetlist)
+            var players = Utilities.GetPlayers();
+            var target = new List<CCSPlayerController>();
+            
+            foreach(var player in players)
             {
-                CCSPlayerPawn playerPawn = player.PlayerPawn.Value;
-                bool IsAlive = player.PawnIsAlive;
+                var playerPawn = player.PlayerPawn.Value;
+                var isAlive = player.PawnIsAlive;
 
                 // for all counter-terrorist
                 if (string.Equals(targetname, "@ct") && !destination)
                 {
-                    if (playerPawn.TeamNum == 3 && IsAlive)
+                    if (playerPawn.TeamNum == 3 && isAlive)
                     {
-                        targetlist.Add(player);
+                        target.Add(player);
                     }
                 }
                 // for all terrorist
                 else if (string.Equals(targetname, "@t") && !destination)
                 {
-                    if (playerPawn.TeamNum == 2 && IsAlive)
+                    if (playerPawn.TeamNum == 2 && isAlive)
                     {
-                        targetlist.Add(player);
+                        target.Add(player);
                     }
                 }
                 // for all player
                 else if (string.Equals(targetname, "@all") && !destination)
                 {
-                    if (IsAlive)
+                    if (isAlive)
                     {
-                        targetlist.Add(player);
+                        target = players;
                     }
                 }
                 // for yourself
                 else if (string.Equals(targetname, "@me"))
                 {
-                    if (client.PawnIsAlive)
-                    {
-                        targetlist.Add(client);
-                        break;
-                    }
+                    if (client != null && !client.PawnIsAlive) continue;
+                    if (client != null) target.Add(client);
+                    break;
                 }
                 else
                 {
-                    StringComparison stringComparison = StringComparison.OrdinalIgnoreCase;
-                    if (player.PlayerName.Contains(targetname, stringComparison) && IsAlive)
-                    {
-                        targetlist.Add(player);
+                    if (!player.PlayerName.Equals(targetname, StringComparison.OrdinalIgnoreCase) || !isAlive) continue;
+                    target.Add(player);
 
-                        if (destination) break;
-                    }
+                    if (destination) break;
                 }
             }
-            return targetlist;
+            return target;
         }
     }
 }
