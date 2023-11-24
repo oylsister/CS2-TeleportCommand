@@ -1,5 +1,4 @@
 ﻿using CounterStrikeSharp.API.Core;
-using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Utils;
 using CounterStrikeSharp.API.Modules.Admin;
@@ -8,8 +7,8 @@ namespace TeleportCommand;
 public class TeleportCommand : BasePlugin
 {
     public override string ModuleName => "CS2 Teleport Command";
-    public override string ModuleVersion => "1.0";
-    public override string ModuleAuthor => "Oylsister";
+    public override string ModuleVersion => "1.0.1";
+    public override string ModuleAuthor => "Oylsister, Sparky";
     public override string ModuleDescription => "Advanced Teleport Command for Counter-Strike 2";
 
     private readonly FindTargetModule _findTarget;
