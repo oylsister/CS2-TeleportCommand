@@ -23,6 +23,7 @@ public class TeleportCommand : BasePlugin
         AddCommand("teleport", "Teleport Player to Player", Command_Teleport);
         AddCommand("tele", "Teleport Player to Player", Command_Teleport);
         AddCommand("bring", "Bring Player To User", Command_Bring);
+        AddCommand("goto", "Bring User To Player", Command_Goto);
     }
 
     [RequiresPermissions("@css/slay")]
@@ -101,5 +102,31 @@ public class TeleportCommand : BasePlugin
             targetPawn.Teleport(position!, angle!, velocity!);
             info.ReplyToCommand($"[Teleport] Successfully Teleport bring { name } to you.");
         }
+    }
+    
+    private void Command_Goto(CCSPlayerController? client, CommandInfo command)
+    {
+        if (command.ArgCount <= 1)
+        {
+            command.ReplyToCommand("[Teleport] Usage: css_goto <client>");
+            return;
+        }
+
+        var targetName = command.GetArg(1);
+        var target = _findTarget.FindTarget(client, targetName).First();
+
+        if (!target.IsValid)
+        {
+            command.ReplyToCommand("[Teleport] Invalid target name.");
+            return;
+        }
+        
+        // Find the angle and position.
+        var targetPawn = target.PlayerPawn.Value;
+        var position = targetPawn.AbsOrigin;
+        var angle = targetPawn.AbsRotation;
+        var velocity = targetPawn.AbsVelocity;
+        client?.Teleport(position!, angle!, velocity);
+        command.ReplyToCommand($"[Teleport] Successfully Teleport goto you to { target.PlayerName }.");
     }
 }
