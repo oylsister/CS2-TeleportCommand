@@ -7,3 +7,4 @@ TeleportCommand/obj/project.assets.json
 TeleportCommand/obj/Debug/net7.0/TeleportCommand.pdb
 TeleportCommand/obj/Debug/net7.0/TeleportCommand.GlobalUsings.g.cs
 TeleportCommand/obj/Debug/net7.0/TeleportCommand.GeneratedMSBuildEditorConfig.editorconfig
+TeleportCommand/bin/*
