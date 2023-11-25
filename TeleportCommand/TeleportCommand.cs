@@ -7,7 +7,7 @@ namespace TeleportCommand;
 public class TeleportCommand : BasePlugin
 {
     public override string ModuleName => "CS2 Teleport Command";
-    public override string ModuleVersion => "1.1.0";
+    public override string ModuleVersion => "1.1.1";
     public override string ModuleAuthor => "Oylsister, Sparky";
     public override string ModuleDescription => "Advanced Teleport Command for Counter-Strike 2";
 
