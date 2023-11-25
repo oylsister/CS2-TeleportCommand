@@ -5,12 +5,6 @@ namespace TeleportCommand
 {
     public class FindTargetModule : IFindTargetModule
     {
-        private TeleportCommand _core;
-        public FindTargetModule(TeleportCommand plugin)
-        {
-            _core = plugin;
-        }
-
         public List<CCSPlayerController> FindTarget(CCSPlayerController? client, string targetname, bool destination = false)
         {
             var players = Utilities.GetPlayers();
