@@ -11,12 +11,7 @@ public class TeleportCommand : BasePlugin
     public override string ModuleAuthor => "Oylsister, Sparky";
     public override string ModuleDescription => "Advanced Teleport Command for Counter-Strike 2";
 
-    private readonly FindTargetModule _findTarget;
-
-    public TeleportCommand()
-    {
-        _findTarget = new FindTargetModule(this);
-    }
+    private readonly IFindTargetModule _findTarget = new FindTargetModule();
 
     public override void Load(bool hotReload)
     {
