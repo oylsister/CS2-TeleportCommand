@@ -109,20 +109,27 @@ public class TeleportCommand : BasePlugin
         }
 
         var targetName = command.GetArg(1);
-        var target = _findTarget.FindTarget(client, targetName).First();
+        
+        // Get the client name that you want to be destination.
+        var targetList = _findTarget.FindTarget(client, targetName, true);
 
-        if (!target.IsValid)
+        if (targetList.Count <= 0)
         {
             command.ReplyToCommand("[Teleport] Invalid target name.");
             return;
         }
+
+        var target = targetList.First();
+        var targetPawn = target.PlayerPawn.Value;
+        var clientPawn = client?.PlayerPawn.Value;
         
         // Find the angle and position.
-        var targetPawn = target.PlayerPawn.Value;
-        var position = targetPawn.AbsOrigin;
-        var angle = targetPawn.AbsRotation;
+        var position = targetPawn.AbsOrigin!;
+        var angle = targetPawn.AbsRotation!;
         var velocity = targetPawn.AbsVelocity;
-        client?.Teleport(position!, angle!, velocity);
+        
+        clientPawn?.Teleport(position, angle, velocity);
+        
         command.ReplyToCommand($"[Teleport] Successfully Teleport goto you to { target.PlayerName }.");
     }
 }
