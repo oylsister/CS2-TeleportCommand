@@ -99,6 +99,7 @@ public class TeleportCommand : BasePlugin
         }
     }
     
+    [RequiresPermissions("@css/slay")]
     private void Command_Goto(CCSPlayerController? client, CommandInfo command)
     {
         if (command.ArgCount <= 1)
