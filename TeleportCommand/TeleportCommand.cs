@@ -22,29 +22,35 @@ public class TeleportCommand : BasePlugin
     }
 
     [RequiresPermissions("@css/slay")]
-    private void Command_Teleport(CCSPlayerController? client, CommandInfo info)
+    private void Command_Teleport(CCSPlayerController? client, CommandInfo command)
     {
-        if (info.ArgCount <= 2)
+        if (client == null)
         {
-            info.ReplyToCommand("[Teleport] Usage: css_teleport <client> <dest-client>");
+            command.ReplyToCommand("[Teleport] The command cannot be used through the server console");
+            return;
+        }
+        
+        if (command.ArgCount <= 2)
+        {
+            command.ReplyToCommand("[Teleport] Usage: css_teleport <client> <dest-client>");
             return;
         }
 
         // Get the client name that you want to be teleported.
-        var targetname = _findTarget.FindTarget(client, info.GetArg(1));
+        var targetname = _findTarget.FindTarget(client, command.GetArg(1));
 
         // Get the client name that you want to be destination.
-        var destTemp = _findTarget.FindTarget(client, info.GetArg(2), true);
+        var destTemp = _findTarget.FindTarget(client, command.GetArg(2), true);
 
         if (targetname.Count <= 0)
         {
-            info.ReplyToCommand("[Teleport] Invalid target name.");
+            command.ReplyToCommand("[Teleport] Invalid target name.");
             return;
         }
 
         if (destTemp.Count <= 0)
         {
-            info.ReplyToCommand("[Teleport] Invalid target destination name.");
+            command.ReplyToCommand("[Teleport] Invalid target destination name.");
             return;
         }
 
@@ -62,46 +68,58 @@ public class TeleportCommand : BasePlugin
             targetPawn.Teleport(position, angle, velocity);
         }
 
-        info.ReplyToCommand("[Teleport] Successfully Teleport Client.");
+        command.ReplyToCommand("[Teleport] Successfully Teleport Client.");
     }
 
     [RequiresPermissions("@css/slay")]
-    private void Command_Bring(CCSPlayerController? client, CommandInfo info)
+    private void Command_Bring(CCSPlayerController? client, CommandInfo command)
     {
-        if (info.ArgCount <= 1)
+        if (client == null)
         {
-            info.ReplyToCommand("[Teleport] Usage: css_bring <client>");
+            command.ReplyToCommand("[Teleport] The command cannot be used through the server console");
+            return;
+        }
+        
+        if (command.ArgCount <= 1)
+        {
+            command.ReplyToCommand("[Teleport] Usage: css_bring <client>");
             return;
         }
 
 
         // Get the client name that you want to be teleported.
-        var target = info.GetArg(1);
+        var target = command.GetArg(1);
         var targetname = _findTarget.FindTarget(client, target);
 
         if (targetname.Count <= 0)
         {
-            info.ReplyToCommand("[Teleport] Invalid target name.");
+            command.ReplyToCommand("[Teleport] Invalid target name.");
             return;
         }
 
         // Find the angle and position.
-        var playerPawn = client?.PlayerPawn.Value;
-        var position = playerPawn?.AbsOrigin;
-        var angle = playerPawn?.AbsRotation;
-        var velocity = playerPawn?.AbsVelocity;
+        var playerPawn = client.PlayerPawn.Value;
+        var position = playerPawn.AbsOrigin!;
+        var angle = playerPawn.AbsRotation!;
+        var velocity = playerPawn.AbsVelocity;
 
         foreach (var targetPawn in targetname.Select(player => player.PlayerPawn.Value))
         {
             var name = targetPawn.Controller.Value.PlayerName;
-            targetPawn.Teleport(position!, angle!, velocity!);
-            info.ReplyToCommand($"[Teleport] Successfully Teleport bring { name } to you.");
+            targetPawn.Teleport(position, angle, velocity);
+            command.ReplyToCommand($"[Teleport] Successfully Teleport bring { name } to you.");
         }
     }
     
     [RequiresPermissions("@css/slay")]
     private void Command_Goto(CCSPlayerController? client, CommandInfo command)
     {
+        if (client == null)
+        {
+            command.ReplyToCommand("[Teleport] The command cannot be used through the server console");
+            return;
+        }
+        
         if (command.ArgCount <= 1)
         {
             command.ReplyToCommand("[Teleport] Usage: css_goto <client>");
@@ -121,14 +139,14 @@ public class TeleportCommand : BasePlugin
 
         var target = targetList.First();
         var targetPawn = target.PlayerPawn.Value;
-        var clientPawn = client?.PlayerPawn.Value;
+        var clientPawn = client.PlayerPawn.Value;
         
         // Find the angle and position.
         var position = targetPawn.AbsOrigin!;
         var angle = targetPawn.AbsRotation!;
         var velocity = targetPawn.AbsVelocity;
         
-        clientPawn?.Teleport(position, angle, velocity);
+        clientPawn.Teleport(position, angle, velocity);
         
         command.ReplyToCommand($"[Teleport] Successfully Teleport goto you to { target.PlayerName }.");
     }
