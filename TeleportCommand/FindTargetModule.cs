@@ -5,12 +5,6 @@ namespace TeleportCommand
 {
     public class FindTargetModule : IFindTargetModule
     {
-        private TeleportCommand _core;
-        public FindTargetModule(TeleportCommand plugin)
-        {
-            _core = plugin;
-        }
-
         public List<CCSPlayerController> FindTarget(CCSPlayerController? client, string targetname, bool destination = false)
         {
             var players = Utilities.GetPlayers();
@@ -18,13 +12,12 @@ namespace TeleportCommand
             
             foreach(var player in players)
             {
-                var playerPawn = player.PlayerPawn.Value;
                 var isAlive = player.PawnIsAlive;
 
                 // for all counter-terrorist
                 if (string.Equals(targetname, "@ct") && !destination)
                 {
-                    if (playerPawn.TeamNum == 3 && isAlive)
+                    if (player.TeamNum == 3 && isAlive)
                     {
                         target.Add(player);
                     }
@@ -32,7 +25,7 @@ namespace TeleportCommand
                 // for all terrorist
                 else if (string.Equals(targetname, "@t") && !destination)
                 {
-                    if (playerPawn.TeamNum == 2 && isAlive)
+                    if (player.TeamNum == 2 && isAlive)
                     {
                         target.Add(player);
                     }
