@@ -11,8 +11,6 @@ public class TeleportCommand : BasePlugin
     public override string ModuleAuthor => "Oylsister, Sparky";
     public override string ModuleDescription => "Advanced Teleport Command for Counter-Strike 2";
 
-    private readonly IFindTargetModule _findTarget = new FindTargetModule();
-
     public override void Load(bool hotReload)
     {
         AddCommand("teleport", "Teleport Player to Player", Command_Teleport);
@@ -37,33 +35,30 @@ public class TeleportCommand : BasePlugin
         }
 
         // Get the client name that you want to be teleported.
-        var targetname = _findTarget.FindTarget(client, command.GetArg(1));
+        var target = command.GetArgTargetResult(1);
 
         // Get the client name that you want to be destination.
-        var destTemp = _findTarget.FindTarget(client, command.GetArg(2), true);
+        var destTarget = command.GetArgTargetResult(2);
 
-        if (targetname.Count <= 0)
+        if (target == null)
         {
             command.ReplyToCommand("[Teleport] Invalid target name.");
             return;
         }
 
-        if (destTemp.Count <= 0)
+        if (destTarget == null)
         {
             command.ReplyToCommand("[Teleport] Invalid target destination name.");
             return;
         }
 
-        // target destination can only be one.
-        var targetdestination = destTemp[0];
-
         // Find the angle and position.
-        var playerPawn = targetdestination.PlayerPawn.Value;
+        var playerPawn = destTarget.Players.First();
         var position = playerPawn.AbsOrigin ?? new Vector(default);
         var angle = playerPawn.AbsRotation ?? new QAngle(default);
         var velocity = playerPawn.AbsVelocity;
 
-        foreach (var targetPawn in targetname.Select(player => player.PlayerPawn.Value))
+        foreach (var targetPawn in target.Players.Select(player => player.PlayerPawn.Value))
         {
             targetPawn.Teleport(position, angle, velocity);
         }
@@ -88,10 +83,9 @@ public class TeleportCommand : BasePlugin
 
 
         // Get the client name that you want to be teleported.
-        var target = command.GetArg(1);
-        var targetname = _findTarget.FindTarget(client, target);
+        var target = command.GetArgTargetResult(1);
 
-        if (targetname.Count <= 0)
+        if (target.Players.Count <= 0)
         {
             command.ReplyToCommand("[Teleport] Invalid target name.");
             return;
@@ -103,7 +97,7 @@ public class TeleportCommand : BasePlugin
         var angle = playerPawn.AbsRotation!;
         var velocity = playerPawn.AbsVelocity;
 
-        foreach (var targetPawn in targetname.Select(player => player.PlayerPawn.Value))
+        foreach (var targetPawn in target.Players.Select(player => player.PlayerPawn.Value))
         {
             var name = targetPawn.Controller.Value.PlayerName;
             targetPawn.Teleport(position, angle, velocity);
@@ -126,18 +120,16 @@ public class TeleportCommand : BasePlugin
             return;
         }
 
-        var targetName = command.GetArg(1);
-        
-        // Get the client name that you want to be destination.
-        var targetList = _findTarget.FindTarget(client, targetName, true);
+        var targetArg = command.GetArgTargetResult(1);
 
-        if (targetList.Count <= 0)
+        if (targetArg.Players.Count <= 0)
         {
             command.ReplyToCommand("[Teleport] Invalid target name.");
             return;
         }
 
-        var target = targetList.First();
+        var target = targetArg.Players.First();
+
         var targetPawn = target.PlayerPawn.Value;
         var clientPawn = client.PlayerPawn.Value;
         
