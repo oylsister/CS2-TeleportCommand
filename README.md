@@ -12,7 +12,3 @@
  `!bring` `<playername>` for bring player to you.
 
  `!goto` `<playername>` for bring you to player.
-
-
- `<playername>` as @ct @t or @all are worked (This is for temporary only).
-
