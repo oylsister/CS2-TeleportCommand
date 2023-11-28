@@ -53,7 +53,7 @@ public class TeleportCommand : BasePlugin
         }
 
         // Find the angle and position.
-        var playerPawn = destTarget.Players.First();
+        var playerPawn = destTarget.Players.First().PlayerPawn.Value;
         var position = playerPawn.AbsOrigin ?? new Vector(default);
         var angle = playerPawn.AbsRotation ?? new QAngle(default);
         var velocity = playerPawn.AbsVelocity;
